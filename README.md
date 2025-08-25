@@ -6,8 +6,9 @@ A storage of online code practicals for lecturers to grab and use whenever they 
 
 ## Current Development
 
-
+### VR Projects 
 - Experience of Schizophrenia Symptoms Simulator (in other words: Schizophrenia Simulator)
+
 
 
 
