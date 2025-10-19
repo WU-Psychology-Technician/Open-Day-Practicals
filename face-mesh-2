@@ -1,0 +1,56 @@
+import cv2
+import mediapipe as mp
+import numpy as np
+
+# Initialize MediaPipe Face Mesh
+mp_face_mesh = mp.solutions.face_mesh
+mp_drawing = mp.solutions.drawing_utils
+
+NEON_GREEN = (0, 255, 0)
+
+face_mesh = mp_face_mesh.FaceMesh(
+    max_num_faces=1,
+    refine_landmarks=True,
+    min_detection_confidence=0.6,
+    min_tracking_confidence=0.6
+)
+
+cap = cv2.VideoCapture(0)
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    frame = cv2.flip(frame, 1)
+    h, w, _ = frame.shape
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    results = face_mesh.process(rgb_frame)
+
+    # Transparent overlay for glowing effect
+    overlay = np.zeros_like(frame, dtype=np.uint8)
+
+    if results.multi_face_landmarks:
+        for face_landmarks in results.multi_face_landmarks:
+            # Draw tessellation on overlay
+            mp_drawing.draw_landmarks(
+                image=overlay,
+                landmark_list=face_landmarks,
+                connections=mp_face_mesh.FACEMESH_TESSELATION,
+                landmark_drawing_spec=None,
+                connection_drawing_spec=mp_drawing.DrawingSpec(color=NEON_GREEN, thickness=1, circle_radius=0)
+            )
+
+    # Apply Gaussian blur to create glow
+    glow = cv2.GaussianBlur(overlay, (21,21), 0)
+
+    # Merge glow and original frame
+    frame = cv2.addWeighted(frame, 1, glow, 0.7, 0)
+    frame = cv2.addWeighted(frame, 1, overlay, 0.8, 0)
+
+    cv2.imshow("Neon Green Face Mesh", frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
