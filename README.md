@@ -6,7 +6,12 @@ A storage of online code practicals for lecturers to grab and use whenever they 
 
 ## Current Development
 
-### To be Announced
+### WUPSY VR Terminal 
+- Currently developing a Virtual Reality space where you walk in a sort of airport terminal longue. However, instead of shops, restaurants, and beauty salons there will be experimental rooms, psychological demonstrations and other bits and bobs I will develop for specific disciplines in Psychology. These can have several applications from healthcare, forensic, and developmental psychology.
+
+
+
+
 
 
 
